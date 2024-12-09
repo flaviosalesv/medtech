@@ -9,7 +9,6 @@ export default function DashboardPage() {
 
   const [selectedTab, setSelectedTab] = useState<string>("tabelaValores");
 
-  // Exemplo de tabela de valores (nome do exame e valor)
   const [valores, setValores] = useState([
     { exame: "Mamas", valor: 200 },
     { exame: "Transvaginal", valor: 200 },
@@ -33,24 +32,20 @@ export default function DashboardPage() {
   ]);
 
   const [showModal, setShowModal] = useState(false);
+  const [novoExame, setNovoExame] = useState("");
+  const [novoValor, setNovoValor] = useState("");
   const [exameEditado, setExameEditado] = useState<any>(null);
 
-  const handleEditValue = (exame: any) => {
-    setExameEditado(exame);
-    setShowModal(true);
+  const handleAddExam = () => {
+    if (novoExame && novoValor) {
+      setValores([...valores, { exame: novoExame, valor: parseFloat(novoValor) }]);
+      setNovoExame("");
+      setNovoValor("");
+    }
   };
 
-  const handleConfirmEdit = (newValue: number) => {
-    if (exameEditado) {
-      setValores((prevValues) =>
-        prevValues.map((ex) =>
-          ex.exame === exameEditado.exame
-            ? { ...ex, valor: newValue }
-            : ex
-        )
-      );
-      setShowModal(false);
-    }
+  const handleDeleteExam = (exame: string) => {
+    setValores(valores.filter((ex) => ex.exame !== exame));
   };
 
   return (
@@ -85,8 +80,8 @@ export default function DashboardPage() {
         <Button fullWidth variant="subtle" color="blue" onClick={() => setSelectedTab("desempenho")}>
           Desempenho
         </Button>
-        <Button fullWidth variant="subtle" color="blue" onClick={() => setSelectedTab("ajuda")}>
-          Help
+        <Button fullWidth variant="subtle" color="blue" onClick={() => setSelectedTab("colaboradores")}>
+          Colaboradores
         </Button>
       </Box>
 
@@ -101,6 +96,22 @@ export default function DashboardPage() {
         {selectedTab === "tabelaValores" && (
           <>
             <Title order={2}>Tabela de Valores</Title>
+
+            <Box style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+              <TextInput
+                placeholder="Nome do exame"
+                value={novoExame}
+                onChange={(e) => setNovoExame(e.target.value)}
+              />
+              <TextInput
+                placeholder="Valor"
+                value={novoValor}
+                type="number"
+                onChange={(e) => setNovoValor(e.target.value)}
+              />
+              <Button onClick={handleAddExam}>Adicionar</Button>
+            </Box>
+
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr>
@@ -117,7 +128,9 @@ export default function DashboardPage() {
                       {exame.valor}
                     </td>
                     <td style={{ border: "1px solid #ccc", padding: "10px" }}>
-                      <Button onClick={() => handleEditValue(exame)}>Editar</Button>
+                      <Button color="red" onClick={() => handleDeleteExam(exame.exame)}>
+                        Excluir
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -126,41 +139,14 @@ export default function DashboardPage() {
           </>
         )}
 
-        {selectedTab === "agendamento" && (
-          <Title order={2}>Agenda</Title>
-          // Adicionar a funcionalidade da agenda aqui
-        )}
+        {selectedTab === "agendamento" && <Title order={2}>Agenda</Title>}
 
-        {selectedTab === "financeiro" && (
-          <Title order={2}>Financeiro</Title>
-          // Adicionar a funcionalidade financeira aqui
-        )}
+        {selectedTab === "financeiro" && <Title order={2}>Financeiro</Title>}
 
-        {selectedTab === "desempenho" && (
-          <Title order={2}>Desempenho</Title>
-          // Adicionar a funcionalidade de notificações aqui
-        )}
+        {selectedTab === "desempenho" && <Title order={2}>Desempenho</Title>}
 
-        {selectedTab === "ajuda" && (
-          <Title order={2}>Ajuda</Title>
-          // Adicionar a funcionalidade de ajuda aqui
-        )}
+        {selectedTab === "colaboradores" && <Title order={2}>Colaboradores</Title>}
       </Box>
-
-      <Modal
-        opened={showModal}
-        onClose={() => setShowModal(false)}
-        title={`Editar valor de ${exameEditado?.exame}`}
-      >
-        <TextInput
-          label="Novo valor"
-          value={exameEditado?.valor || ""}
-          onChange={(e) => setExameEditado({ ...exameEditado, valor: e.target.value })}
-        />
-        <Button onClick={() => handleConfirmEdit(parseFloat(exameEditado?.valor || "0"))}>
-          Confirmar alteração
-        </Button>
-      </Modal>
     </Box>
   );
 }
