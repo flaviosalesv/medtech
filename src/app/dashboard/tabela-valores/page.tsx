@@ -2,6 +2,7 @@
 
 import { Box, Button, TextInput, Title } from "@mantine/core";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TabelaValoresPage() {
   const [valores, setValores] = useState([
@@ -10,6 +11,8 @@ export default function TabelaValoresPage() {
   ]);
   const [novoExame, setNovoExame] = useState("");
   const [novoValor, setNovoValor] = useState("");
+
+  const router = useRouter();
 
   const handleAddExam = () => {
     if (novoExame && novoValor) {
@@ -21,6 +24,13 @@ export default function TabelaValoresPage() {
 
   const handleDeleteExam = (exame: string) => {
     setValores(valores.filter((ex) => ex.exame !== exame));
+  };
+
+  const handleGoToColaboradores = () => {
+    // Construindo a string da URL com os exames
+    const queryParams = new URLSearchParams();
+    queryParams.set("exames", JSON.stringify(valores)); // Passa todos os exames para a URL
+    router.push(`/dashboard/colaboradores?${queryParams.toString()}`);
   };
 
   return (
@@ -64,6 +74,10 @@ export default function TabelaValoresPage() {
           ))}
         </tbody>
       </table>
+
+      <Button onClick={handleGoToColaboradores} style={{ marginTop: "20px" }}>
+        Ir para Colaboradores
+      </Button>
     </Box>
   );
 }
