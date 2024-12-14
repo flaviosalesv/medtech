@@ -2,21 +2,22 @@
 
 import { Box, Button, TextInput, Title, CheckboxGroup, Checkbox, Checkbox as MantineCheckbox } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; 
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function ColaboradoresPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [exames, setExames] = useState<{ exame: string; valor: number }[]>([]);
   const [selectedExams, setSelectedExams] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
-    
     const examesQuery = searchParams.get("exames");
     if (examesQuery) {
       try {
         const examesData = JSON.parse(examesQuery);
-        setExames(examesData); 
+        setExames(examesData);
       } catch (error) {
         console.error("Erro ao carregar os exames:", error);
       }
@@ -28,19 +29,23 @@ export default function ColaboradoresPage() {
   };
 
   const handleSelectAllExams = () => {
-    
     setSelectedExams(exames.map((exame) => exame.exame));
   };
 
   const handleUnselectAllExams = () => {
-    
     setSelectedExams([]);
   };
 
   const handleSubmit = () => {
-    
     console.log("Exames marcados:", selectedExams);
     console.log("Data selecionada:", selectedDate);
+  };
+
+  // Função para navegar com os mesmos valores de exames
+  const handleGoToDashboard = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("exames", JSON.stringify(exames));
+    router.push(`/dashboard?${queryParams.toString()}`);
   };
 
   return (
@@ -109,6 +114,10 @@ export default function ColaboradoresPage() {
 
       <Button fullWidth mt="lg" onClick={handleSubmit}>
         Adicionar
+      </Button>
+      
+      <Button fullWidth mt="md" variant="outline" onClick={handleGoToDashboard}>
+        Voltar para Dashboard
       </Button>
     </Box>
   );
