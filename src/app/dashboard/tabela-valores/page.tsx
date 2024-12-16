@@ -27,9 +27,9 @@ export default function TabelaValoresPage() {
   };
 
   const handleGoToColaboradores = () => {
-    // Construindo a string da URL com os exames
+   
     const queryParams = new URLSearchParams();
-    queryParams.set("exames", JSON.stringify(valores)); // Passa todos os exames para a URL
+    queryParams.set("exames", JSON.stringify(valores)); 
     router.push(`/dashboard/colaboradores?${queryParams.toString()}`);
   };
 

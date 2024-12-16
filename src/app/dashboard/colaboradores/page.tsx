@@ -41,7 +41,7 @@ export default function ColaboradoresPage() {
     console.log("Data selecionada:", selectedDate);
   };
 
-  // Função para navegar com os mesmos valores de exames
+ 
   const handleGoToDashboard = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("exames", JSON.stringify(exames));
