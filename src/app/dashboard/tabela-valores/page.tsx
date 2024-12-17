@@ -27,45 +27,67 @@ export default function TabelaValoresPage() {
   };
 
   const handleGoToColaboradores = () => {
-   
     const queryParams = new URLSearchParams();
-    queryParams.set("exames", JSON.stringify(valores)); 
+    queryParams.set("exames", JSON.stringify(valores));
     router.push(`/dashboard/colaboradores?${queryParams.toString()}`);
   };
 
   return (
-    <Box>
-      <Title order={2}>Tabela de Valores</Title>
+    <Box style={{ padding: "30px", maxWidth: "800px", margin: "0 auto" }}>
+      <Title order={2} style={{ textAlign: "center", marginBottom: "30px" }}>
+        Tabela de Valores
+      </Title>
 
-      <Box style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+      <Box
+        style={{
+          marginBottom: "30px",
+          display: "flex",
+          gap: "15px",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <TextInput
           placeholder="Nome do exame"
           value={novoExame}
           onChange={(e) => setNovoExame(e.target.value)}
+          style={{ flex: 1 }}
         />
         <TextInput
           placeholder="Valor"
           value={novoValor}
           type="number"
           onChange={(e) => setNovoValor(e.target.value)}
+          style={{ flex: 1 }}
         />
         <Button onClick={handleAddExam}>Adicionar</Button>
       </Box>
 
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
         <thead>
-          <tr>
-            <th style={{ border: "1px solid #ccc", padding: "10px" }}>Exame</th>
-            <th style={{ border: "1px solid #ccc", padding: "10px" }}>Valor</th>
-            <th style={{ border: "1px solid #ccc", padding: "10px" }}>Ação</th>
+          <tr style={{ backgroundColor: "#f3f3f3" }}>
+            <th style={{ border: "1px solid #ddd", padding: "15px", textAlign: "left" }}>
+              Exame
+            </th>
+            <th style={{ border: "1px solid #ddd", padding: "15px", textAlign: "left" }}>
+              Valor
+            </th>
+            <th style={{ border: "1px solid #ddd", padding: "15px", textAlign: "center" }}>
+              Ação
+            </th>
           </tr>
         </thead>
         <tbody>
-          {valores.map((exame) => (
-            <tr key={exame.exame}>
-              <td style={{ border: "1px solid #ccc", padding: "10px" }}>{exame.exame}</td>
-              <td style={{ border: "1px solid #ccc", padding: "10px" }}>{exame.valor}</td>
-              <td style={{ border: "1px solid #ccc", padding: "10px" }}>
+          {valores.map((exame, index) => (
+            <tr
+              key={exame.exame}
+              style={{
+                backgroundColor: index % 2 === 0 ? "#fafafa" : "#ffffff",
+              }}
+            >
+              <td style={{ border: "1px solid #ddd", padding: "15px" }}>{exame.exame}</td>
+              <td style={{ border: "1px solid #ddd", padding: "15px" }}>R$ {exame.valor}</td>
+              <td style={{ border: "1px solid #ddd", padding: "15px", textAlign: "center" }}>
                 <Button color="red" onClick={() => handleDeleteExam(exame.exame)}>
                   Excluir
                 </Button>
@@ -75,9 +97,9 @@ export default function TabelaValoresPage() {
         </tbody>
       </table>
 
-      <Button onClick={handleGoToColaboradores} style={{ marginTop: "20px" }}>
-        Ir para Colaboradores
-      </Button>
+      <Box style={{ textAlign: "center", marginTop: "30px" }}>
+        <Button onClick={handleGoToColaboradores}>Ir para Colaboradores</Button>
+      </Box>
     </Box>
   );
 }
