@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Center, Title } from "@mantine/core";
+import { Box, Button, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
@@ -49,11 +49,20 @@ export default function DashboardPage() {
           flex: 1,
           marginTop: isMobile ? "20px" : "0",
           marginLeft: isMobile ? "0" : "250px",
+          height: "100vh",
+          backgroundImage: "url('/doc_app.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          color: "#fff",
           padding: "20px",
         }}
       >
-        <Title order={2}>Bem-vindo ao Dashboard!</Title>
-        <p>Selecione um item no menu para começar.</p>
+        <Title order={2} style={{ textShadow: "0 0 5px rgba(0, 0, 0, 0.7)", marginBottom: "10px" }}>
+          Bem-vindo ao Dashboard!
+        </Title>
+        <p style={{ textShadow: "0 0 5px rgba(0, 0, 0, 0.7)" }}>
+          Selecione um item no menu para começar.
+        </p>
       </Box>
     </Box>
   );
